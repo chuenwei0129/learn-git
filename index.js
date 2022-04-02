@@ -10,3 +10,5 @@ console.log('关于 checkout -- 第二种情况的提交')
 
 console.log(`revert测试, 第一次提交`)
 console.log(`revert测试, 第二次提交`)
+
+console.log(`revert测试, 第三次提交`)
