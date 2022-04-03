@@ -24,6 +24,7 @@
     - [修改已创建项目的主分支为 main](#修改已创建项目的主分支为-main)
   - [初始化仓库及操作](#初始化仓库及操作)
   - [文件状态](#文件状态)
+  - [修改提交信息](#修改提交信息)
   - [撤销修改](#撤销修改)
   - [git pull](#git-pull)
     - [git pull 命令的原理](#git-pull-命令的原理)
@@ -372,6 +373,28 @@ git status
 
   这个时候，我们将本地的代码推送到远端即可
 
+### 修改提交信息
+
+有时候我们提交完了才发现漏掉了几个文件没有添加，或者提交信息写错了。 此时，可以运行带有 --amend 选项的提交命令来重新提交：
+
+```sh
+git commit --amend
+```
+
+这个命令会将暂存区中的文件提交。如果自上次提交以来你还未做任何修改（**例如，在上次提交后马上执行了此命令**）， 那么快照会保持不变，而你所修改的只是提交信息。
+
+文本编辑器启动后，可以看到之前的提交信息。 编辑后保存会覆盖原来的提交信息。
+
+例如，你提交后发现忘记了暂存某些需要的修改，可以像下面这样操作：
+
+```sh
+git commit -m 'initial commit'
+git add forgotten_file
+git commit --amend
+```
+
+最终你只会有一个提交——第二次提交将代替第一次提交的结果。
+
 ### 撤销修改
 
 ```sh
@@ -560,6 +583,8 @@ git rebase -i <base-commit>
 git rebase -i 8061e866
 ```
 
+> TIPS：有时候 `git rebase -i --root` 会很有用
+
 此时会进入一个 vim 的交互式页面，编辑器列出的信息像下列这样。
 
 ![](https://raw.githubusercontent.com/chuenwei0129/my-picgo-repo/master/terminal/SCR-20220403-1c4.png)
@@ -587,6 +612,22 @@ git push -f
 ### git cherry-pick
 
 `git cherry-pick` 可以理解为”挑拣”提交，和 merge 合并一个分支的所有提交不同的是，它会获取某一个分支的单笔提交，并作为一个新的提交引入到你当前分支上。当我们需要在本地合入其他分支的提交时，如果我们不想对整个分支进行合并，而是只想将某一次提交合入到本地当前分支上，那么就要使用 `git cherry-pick` 了。
+
+一次转移多个提交：
+
+```sh
+git cherry-pick commit1 commit2
+```
+
+上面的命令将 commit1 和 commit2 两个提交应用到当前分支。
+
+多个连续的 commit，也可区间复制：
+
+```sh
+git cherry-pick commit1^..commit2
+```
+
+上面的命令将 commit1 到 commit2 这个区间的 commit 都应用到当前分支（包含commit1、commit2），commit1 是最早的提交。
 
 ### git stash
 
